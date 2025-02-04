@@ -6,19 +6,14 @@ import bdc.controller as ct
 db = me.connect(host="mongodb://127.0.0.1:27017/boccato_di_cardinale")
 
 def afegir_especialitat_establiment(establiment, nova_especialitat):
-    """
-    Afegeix una nova especialitat a un establiment existent.
 
-    :param establiment: Objecte Establiment seleccionat.
-    :param nova_especialitat: Especialitat a afegir.
-    :return: True si s'ha afegit correctament, False si ja existia.
-    """
+    # Es comprova si la especialitat ja existeix. Sinó, s'afegeix.
     try:
-        if nova_especialitat in establiment.especialitats:
+        if nova_especialitat in establiment.especialitats: # Si l'especialitat es troba al array
             print("Aquesta especialitat ja existeix.")
             return False
 
-        establiment.especialitats.append(nova_especialitat)
+        establiment.especialitats.append(nova_especialitat) #S'afegeix l'especialitat
         establiment.save()  # Desa els canvis a la base de dades
         return True
     except me.errors.OperationError as e:
@@ -27,15 +22,14 @@ def afegir_especialitat_establiment(establiment, nova_especialitat):
 
 
 def mostrar_establiments():
-    """
-    Mostra una llista numerada de tots els establiments i retorna la llista.
-    """
+
+    # Mostra una llista numerada de tots els establiments i retorna la llista.
     establiments = ct.obtenir_establiments()
-    if not establiments:
+    if not establiments: # Si no hi ha establiments.
         print("No hi ha establiments disponibles.")
         return None
 
-    for i, establiment in enumerate(establiments, start=1):
+    for i, establiment in enumerate(establiments, start=1): # Per cada establiment amb contador
         municipi = establiment.municipi.nom if establiment.municipi else "Desconegut"
         print(f"{i}. {establiment.nom} | {establiment.municipi.codi_postal} | {municipi}")
 
@@ -43,11 +37,11 @@ def mostrar_establiments():
 
 
 def afegir_especialitat():
-    """
-    Permet afegir una especialitat a un establiment existent.
-    """
+
+    # Afegeix una especialitat a un establiment existent.
+
     establiments = mostrar_establiments()
-    if not establiments:
+    if not establiments: # Si no hi ha establiments
         return
 
     while True:
