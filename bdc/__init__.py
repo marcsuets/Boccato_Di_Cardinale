@@ -1,1 +1,1 @@
-print("Carregant el package...: %s"  % __name__)
+print("Carregant el package...: %s" % __name__)
