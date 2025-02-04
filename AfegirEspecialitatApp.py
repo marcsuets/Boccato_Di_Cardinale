@@ -1,22 +1,9 @@
 import mongoengine as me
 import bdc.model as md  # Importa el model definit a la teva aplicació
+import bdc.controller as ct
 
 # Connexió a la base de dades "boccato_di_cardinale"
 db = me.connect(host="mongodb://127.0.0.1:27017/boccato_di_cardinale")
-
-
-def obtenir_establiments():
-    """
-    Retorna una llista d'establiments ordenats per nom.
-
-    :return: Llista d'objectes Establiment o None si hi ha un error.
-    """
-    try:
-        return list(md.Establiment.objects.order_by("nom"))
-    except me.errors.OperationError as e:
-        print(f"Error accedint a la base de dades: {e}")
-        return None
-
 
 def afegir_especialitat_establiment(establiment, nova_especialitat):
     """
@@ -43,7 +30,7 @@ def mostrar_establiments():
     """
     Mostra una llista numerada de tots els establiments i retorna la llista.
     """
-    establiments = obtenir_establiments()
+    establiments = ct.obtenir_establiments()
     if not establiments:
         print("No hi ha establiments disponibles.")
         return None
@@ -86,14 +73,14 @@ def afegir_especialitat():
 
     # Demana la nova especialitat
     while True:
-        nova_especialitat = input("\n➕ Introdueix la nova especialitat: ").strip()
+        nova_especialitat = input("\nIntrodueix la nova especialitat: ").strip()
         if nova_especialitat:
             break
         print("L'especialitat no pot estar buida.")
 
     # Afegeix l'especialitat a través de la funció del controlador
     if afegir_especialitat_establiment(establiment, nova_especialitat):
-        print(f"Especialitat '{nova_especialitat}' afegida correctament!")
+        print(f"Especialitat '{nova_especialitat}' afegida correctament")
     else:
         print("No s'ha pogut afegir l'especialitat.")
 
