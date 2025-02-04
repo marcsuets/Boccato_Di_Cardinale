@@ -1,6 +1,8 @@
 import mongoengine.errors
 import bdc.model as md
 
+import mongoengine as me
+
 
 def obtenir_municipis():
     """
@@ -11,7 +13,14 @@ def obtenir_municipis():
               error durant la realització de la consulta, es retornarà None.
     :rtype: [md.Municipi]
     """
-
+    # Obtenim els municipis ordenats per nom.
+    try:
+        # Obtenim els municipis ordenats per nom.
+        municipis = md.Municipi.objects.order_by("nom")
+        return list(municipis)
+    except Exception as e:
+        print(f"Error obtenint municipis: {e}")
+        return None
 
 
 def obtenir_establiments_municipi(id_municipi=None):
@@ -26,4 +35,16 @@ def obtenir_establiments_municipi(id_municipi=None):
 
     :rtype: [md.Establiment]
     """
+
+    try:
+        if id_municipi is None:
+            # Si no es proporciona cap identificador, es retornen tots els establiments
+            establiments = md.Establiment.objects.order_by("nom")
+        else:
+            # Es filtra per municipi.
+            establiments = md.Establiment.objects(municipi=id_municipi).order_by("nom")
+        return list(establiments)
+    except Exception as e:
+        print(f"Error obtenint establiments per al municipi {id_municipi}: {e}")
+        return None
 
