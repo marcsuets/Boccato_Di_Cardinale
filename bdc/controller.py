@@ -48,3 +48,15 @@ def obtenir_establiments_municipi(id_municipi=None):
         print(f"Error obtenint establiments per al municipi {id_municipi}: {e}")
         return None
 
+def obtenir_establiments():
+    """
+    Retorna una llista d'establiments ordenats per nom.
+
+    :return: Llista d'objectes Establiment o None si hi ha un error.
+    """
+    try:
+        return list(md.Establiment.objects.order_by("nom"))
+    except me.errors.OperationError as e:
+        print(f"Error accedint a la base de dades: {e}")
+        return None
+
